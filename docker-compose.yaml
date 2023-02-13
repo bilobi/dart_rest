@@ -1,0 +1,37 @@
+version: '3'
+
+services: 
+    postgres:
+        image: postgres
+        environment:
+            POSTGRES_USER: bilobi
+            POSTGRES_PASSWORD: prometheus
+            POSTGRES_DB: imaxis_db            
+        container_name: dart_postgre
+        ports:
+            - 5432:5432
+        networks: 
+            - dart_pgnetwork
+        volumes:
+            - ../postgre/db-data:/var/lib/postgresql/data
+    pgadmin4:
+        image: dpage/pgadmin4
+        environment: 
+            PGADMIN_DEFAULT_EMAIL: bilalatmaca@gmail.com
+            PGADMIN_DEFAULT_PASSWORD: prometheus
+        ports:
+        - 9000:80
+        container_name: dart_pgadmin4
+        depends_on:
+            - "postgres"
+        networks:  
+            - dart_pgnetwork    
+networks:
+    dart_pgnetwork:
+        
+volumes: 
+    db-data:
+        driver: local
+
+## sudo hasura migrate create Checkstatus --from-server --endpoint  http://localhost:8080
+## sudo hasura metadata export --endpoint http://localhost:8080
